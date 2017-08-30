@@ -1,3 +1,6 @@
 elastic:
-  host: localhost
+  hostname: localhost
   port: 9200
+  scheme: http
+  document:
+    endpoint: /accounts/person/
