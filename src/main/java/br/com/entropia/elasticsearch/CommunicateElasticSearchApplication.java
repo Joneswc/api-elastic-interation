@@ -7,8 +7,14 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import javax.annotation.PreDestroy;
+
 @SpringBootApplication
 public class CommunicateElasticSearchApplication {
+
+	public static void main(String[] args) {
+		SpringApplication.run(CommunicateElasticSearchApplication.class, args);
+	}
 
 	@Value("${elastic.hostname}")
 	private String hostname;
@@ -19,11 +25,7 @@ public class CommunicateElasticSearchApplication {
 	@Value("${elastic.scheme}")
 	private String scheme;
 
-	public static void main(String[] args) {
-		SpringApplication.run(CommunicateElasticSearchApplication.class, args);
-	}
-
-	@Bean
+	@Bean(destroyMethod = "close")
 	public RestClient client() {
 		RestClient restClient = RestClient.builder(
 				new HttpHost(hostname, port, scheme)

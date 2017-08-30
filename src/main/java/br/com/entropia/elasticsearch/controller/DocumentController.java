@@ -13,20 +13,15 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.util.Collections;
 
 @Scope("request")
-@RestController()
+@RestController
 public class DocumentController {
 
-    private final RestClient restClient;
-
     @Autowired
-    public DocumentController(RestClient restClient) {
-        this.restClient = restClient;
-    }
+    private RestClient restClient;
 
     @Value("${elastic.document.endpoint}")
     private String documentEndPoint;
@@ -47,11 +42,6 @@ public class DocumentController {
         Header[] headers = { new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/json")};
         Response response = restClient.performRequest("GET", documentEndPoint + id, headers);
         return EntityUtils.toString(response.getEntity());
-    }
-
-    @PreDestroy
-    public void closeUsedBeans() throws Exception {
-        this.restClient.close();
     }
 
 }
