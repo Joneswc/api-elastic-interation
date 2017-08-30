@@ -13,17 +13,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.PreDestroy;
 import java.io.IOException;
 import java.util.Collections;
 
 @Scope("request")
 @RestController()
-public class IndexElasticDocument {
+public class DocumentController {
 
     private final RestClient restClient;
 
     @Autowired
-    public IndexElasticDocument(RestClient restClient) {
+    public DocumentController(RestClient restClient) {
         this.restClient = restClient;
     }
 
@@ -41,18 +42,16 @@ public class IndexElasticDocument {
         return EntityUtils.toString(response.getEntity());
     }
 
-    @RequestMapping(value = "/elasticserver")
-    public String testElasticServer() throws IOException {
-        Header[] headers = { new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/json")};
-        Response response = restClient.performRequest("GET", "/", headers);
-        return EntityUtils.toString(response.getEntity());
-    }
-
     @RequestMapping(value = "/search/{id}")
     public String searchById(@PathVariable String id) throws IOException {
         Header[] headers = { new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/json")};
         Response response = restClient.performRequest("GET", documentEndPoint + id, headers);
         return EntityUtils.toString(response.getEntity());
+    }
+
+    @PreDestroy
+    public void closeUsedBeans() throws Exception {
+        this.restClient.close();
     }
 
 }
