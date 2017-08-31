@@ -7,8 +7,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import javax.annotation.PreDestroy;
-
 @SpringBootApplication
 public class CommunicateElasticSearchApplication {
 
@@ -27,10 +25,9 @@ public class CommunicateElasticSearchApplication {
 
 	@Bean(destroyMethod = "close")
 	public RestClient client() {
-		RestClient restClient = RestClient.builder(
+		return RestClient.builder(
 				new HttpHost(hostname, port, scheme)
 		).build();
-		return restClient;
 	}
 
 }

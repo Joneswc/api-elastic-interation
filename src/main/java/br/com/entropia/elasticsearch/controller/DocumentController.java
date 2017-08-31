@@ -10,13 +10,13 @@ import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.annotation.RequestScope;
 
 import java.io.IOException;
 import java.util.Collections;
 
-@Scope("request")
+@RequestScope
 @RestController
 public class DocumentController {
 
@@ -32,7 +32,7 @@ public class DocumentController {
         Response response = restClient.performRequest(
                 "POST",
                 documentEndPoint + id,
-                Collections.<String, String>emptyMap(), // if you need to send param maps to querystring
+                Collections.emptyMap(), // if you need to send param maps to querystring
                 entity);
         return EntityUtils.toString(response.getEntity());
     }
