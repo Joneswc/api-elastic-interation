@@ -24,4 +24,7 @@ public class ResponseIndex {
     @JsonProperty(value = "_source")
     private IndexSource source;
 
+    @JsonProperty(value = "message")
+    private IndexSource message;
+
 }
