@@ -4,3 +4,4 @@ elastic:
   scheme: http
   document:
     endpoint: /accounts/person/
+    deleteall: /accounts/
