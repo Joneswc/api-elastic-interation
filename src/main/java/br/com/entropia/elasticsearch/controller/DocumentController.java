@@ -1,8 +1,9 @@
 package br.com.entropia.elasticsearch.controller;
 
+import br.com.entropia.elasticsearch.entity.ResponseIndex;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.http.HttpEntity;
 import org.apache.http.nio.entity.NStringEntity;
-import org.apache.http.util.EntityUtils;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,23 +25,20 @@ public class DocumentController {
     private String documentEndPoint;
 
     @RequestMapping(value = "/index", method = RequestMethod.POST)
-    public String addIndexWithoutId(@RequestBody String person) throws IOException {
+    public ResponseIndex addIndexWithoutId(@RequestBody String person) throws IOException {
         return addIndex(person, documentEndPoint);
     }
 
     @RequestMapping(value = "/index/{id}", method = RequestMethod.POST)
-    public String addIndexWithId(@RequestBody String person, @PathVariable String id) throws IOException {
+    public ResponseIndex addIndexWithId(@RequestBody String person, @PathVariable String id) throws IOException {
         return addIndex(person, documentEndPoint + id);
     }
 
-    public String addIndex( String person, String endPoint) throws IOException {
+    public ResponseIndex addIndex( String person, String endPoint) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
         HttpEntity entity = new NStringEntity(person);
-        Response response = restClient.performRequest(
-                "POST",
-                endPoint,
-                Collections.emptyMap(), // if you need to send param maps to querystring
-                entity);
-        return EntityUtils.toString(response.getEntity());
+        Response response = restClient.performRequest("POST", endPoint, Collections.emptyMap(), entity);
+        return mapper.readValue(response.getEntity().getContent(), ResponseIndex.class);
     }
 
 }
