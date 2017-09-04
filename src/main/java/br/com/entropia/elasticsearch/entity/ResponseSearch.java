@@ -4,27 +4,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
-public class ResponseIndex {
+public class ResponseSearch {
 
     @JsonProperty(value = "_index")
     private String index;
 
     @JsonProperty(value = "_type")
-    private String type;
+    private String _type;
 
     @JsonProperty(value = "_id")
-    private String id;
+    private String _id;
 
     @JsonProperty(value = "_version")
-    private String version;
+    private String _version;
 
-    @JsonProperty(value = "result")
-    private String result;
+    @JsonProperty(value = "found")
+    private String found;
 
-    @JsonProperty(value = "_shards")
-    private Shards shards;
-
-    @JsonProperty(value = "created")
-    private String created;
+    @JsonProperty(value = "_source")
+    private SearchSource source;
 
 }

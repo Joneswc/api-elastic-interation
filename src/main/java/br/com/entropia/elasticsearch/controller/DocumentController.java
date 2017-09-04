@@ -38,7 +38,8 @@ public class DocumentController {
         ObjectMapper mapper = new ObjectMapper();
         HttpEntity entity = new NStringEntity(person);
         Response response = restClient.performRequest("POST", endPoint, Collections.emptyMap(), entity);
-        return mapper.readValue(response.getEntity().getContent(), ResponseIndex.class);
+        ResponseIndex index = mapper.readValue(response.getEntity().getContent(), ResponseIndex.class);
+        return index;
     }
 
 }
