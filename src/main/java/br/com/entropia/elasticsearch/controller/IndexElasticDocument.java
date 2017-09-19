@@ -24,7 +24,7 @@ public class IndexElasticDocument {
     @Value("${elastic.document.endpoint}")
     private String documentEndPoint;
 
-    @PostMapping("/index/{id}")
+    @RequestMapping(value = "/index/{id}", method = RequestMethod.POST)
 //    public Response addIndex(@RequestBody Map<String, String> params) throws IOException {
     public String addIndex(@RequestBody String person, @PathVariable String id) throws IOException {
         HttpEntity entity = new NStringEntity(person);
@@ -36,14 +36,14 @@ public class IndexElasticDocument {
         return EntityUtils.toString(response.getEntity());
     }
 
-    @GetMapping("/elasticserver")
+    @RequestMapping(value = "/elasticserver")
     public String testElasticServer() throws IOException {
         Header[] headers = { new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/json")};
         Response response = restClient.performRequest("GET", "/", headers);
         return EntityUtils.toString(response.getEntity());
     }
 
-    @GetMapping("/search/{id}")
+    @RequestMapping(value = "/search/{id}")
     public String searchById(@PathVariable String id) throws IOException {
         Header[] headers = { new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/json")};
         Response response = restClient.performRequest("GET", documentEndPoint + id, headers);

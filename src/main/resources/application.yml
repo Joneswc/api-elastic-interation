@@ -4,3 +4,6 @@ elastic:
   scheme: http
   document:
     endpoint: /accounts/person/
+    deleteall: /accounts/
+  search:
+    querystring: _search?q=
