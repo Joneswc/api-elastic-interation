@@ -25,13 +25,6 @@ public class GeneralController {
         this.restClient = restClient;
     }
 
-    @RequestMapping(value = "/elasticserver")
-    public String testElasticServer() throws IOException {
-        Header[] headers = { new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/json")};
-        Response response = restClient.performRequest("GET", "/", headers);
-        return EntityUtils.toString(response.getEntity());
-    }
-
     @PreDestroy
     public void closeUsedBeans() throws Exception {
         this.restClient.close();
